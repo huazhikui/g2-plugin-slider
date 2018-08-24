@@ -27,7 +27,7 @@ class Slider {
       fillOpacity: 0.3,
       lineWidth: 1
     };
-    this.range = [ 0, 100 ];
+    this.range = [0, 100];
     this.layout = 'horizontal';
     // 文本颜色
     this.textStyle = {
@@ -40,7 +40,7 @@ class Slider {
     };
     // 背景图表的配置，如果为 false 则表示不渲染
     this.backgroundChart = {
-      type: [ 'area' ], // 图表的类型，可以是字符串也可是是数组
+      type: ['area'], // 图表的类型，可以是字符串也可是是数组
       color: '#CCD6EC'
     };
   }
@@ -100,7 +100,11 @@ class Slider {
     }
     this.domWidth = width;
     const padding = Util.toAllPadding(this.padding);
-
+    padding.forEach(x => {
+      if (typeof (x) !== 'number') {
+        throw new Error(`padding参数类型异常, 数组元素的正确类型应该是number，实际值是${x}`);
+      }
+    });
     if (this.layout === 'horizontal') {
       this.plotWidth = width - padding[1] - padding[3];
       this.plotPadding = padding[3];
@@ -176,7 +180,7 @@ class Slider {
     const yAxis = this.yAxis;
     const scales = Util.deepMix({
       [`${xAxis}`]: {
-        range: [ 0, 1 ]
+        range: [0, 1]
       }
     }, this.scales); // 用户列定义
     if (!data) { // 没有数据，则不创建
@@ -193,7 +197,7 @@ class Slider {
     let type = backgroundChart.type;
     const color = backgroundChart.color;
     if (!Util.isArray(type)) {
-      type = [ type ];
+      type = [type];
     }
 
     const padding = Util.toAllPadding(this.padding);
@@ -201,7 +205,7 @@ class Slider {
       container: this.container,
       width: this.domWidth,
       height: this.height,
-      padding: [ 0, padding[1], 0, padding[3] ],
+      padding: [0, padding[1], 0, padding[3]],
       animate: false
     });
     bgChart.source(data);
@@ -255,7 +259,7 @@ class Slider {
       this.maxRange = (maxSpan / totalSpan) * 100;
     }
 
-    const range = [ min * 100, max * 100 ];
+    const range = [min * 100, max * 100];
     this.range = range;
     return range;
   }
@@ -303,7 +307,7 @@ class Slider {
   _bindEvent() {
     const self = this;
     const rangeElement = self.rangeElement;
-    rangeElement.on('sliderchange', function(ev) {
+    rangeElement.on('sliderchange', function (ev) {
       const range = ev.range;
       const minRatio = range[0] / 100;
       const maxRatio = range[1] / 100;
